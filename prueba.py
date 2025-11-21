@@ -5,13 +5,13 @@ import sys
 from collections import defaultdict
 
 
-def procesar_caso(n, coords):
+def procesar_caso(n, coordenadas):
     """
     n      : número de focos
     coords : lista [x1, y1, x2, y2, ..., xn, yn]
     """
 
-    puntos = [(coords[i], coords[i + 1]) for i in range(0, 2 * n, 2)]
+    puntos = [(coordenadas[i], coordenadas[i + 1]) for i in range(0, 2 * n, 2)]
 
     # agrupamos por filas y columnas
     filas = defaultdict(list)   # y -> lista de xs
@@ -27,13 +27,13 @@ def procesar_caso(n, coords):
     for ys in columnas.values():
         ys.sort()
 
-    col_keys = sorted(columnas.keys())
-    minY = {x: columnas[x][0] for x in col_keys}
-    maxY = {x: columnas[x][-1] for x in col_keys}
+    llavesCol = sorted(columnas.keys())
+    minY = {x: columnas[x][0] for x in llavesCol}
+    maxY = {x: columnas[x][-1] for x in llavesCol}
 
     # 1) trayectorias verticales: una por cada x
     verticales = []
-    for x in col_keys:
+    for x in llavesCol:
         verticales.append((x, minY[x], x, maxY[x]))
 
     # 2) trayectorias horizontales: separamos donde una vertical cruzaría sin foco
@@ -45,7 +45,7 @@ def procesar_caso(n, coords):
 
         for siguiente in xs[1:]:
             bloqueado = False
-            for xc in col_keys:
+            for xc in llavesCol:
                 # ¿hay una vertical entre actual y siguiente que pase por y
                 #  pero sin foco en (xc, y)? (si hubiese foco, xc estaría en xs)
                 if actual < xc < siguiente and (minY[xc] <= y <= maxY[xc]):
